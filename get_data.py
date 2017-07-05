@@ -5,8 +5,11 @@ import time
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def closes(symbol):
-    url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&outputsize=full&apikey=Z1HX9VZ4L9F3YCI2' % symbol
+def closes(symbol, full_output=True):
+    if full_output:
+        url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&outputsize=full&apikey=Z1HX9VZ4L9F3YCI2' % symbol
+    else:
+        url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=Z1HX9VZ4L9F3YCI2' % symbol
     response = urllib2.urlopen(url)
     data = json.load(response)
 
@@ -21,7 +24,7 @@ def closes(symbol):
     return closes
 
 def get_price(symbol):
-    close_list = closes(symbol)
+    close_list = closes(symbol, False)
     price = close_list[-1]  # most recent price is last element in list
     return price
 
